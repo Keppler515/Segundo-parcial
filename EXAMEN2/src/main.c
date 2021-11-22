@@ -31,8 +31,8 @@
 #include "parser.h"
 #include "utn_biblioteca.h"
 
-#define	MONO	1;
-#define	ESTEREO	2;
+#define	MONO	1
+#define	ESTEREO	2
 
 int main()
 {
@@ -53,6 +53,9 @@ int main()
 
 	        switch(option)
 	        {
+	        case 1:
+	        	puts("El archivo ya se encuentra cargado");
+	        	break;
 	        case 2:
 	        	if(controller_addArcade(pListaArcades)==0)
 	        		if(controller_saveAsText("arcades.csv", pListaArcades)==0)
@@ -70,7 +73,6 @@ int main()
 	        	if(controller_ListArcade(pListaArcades)==0)
 					if(controller_removeArcade(pListaArcades)==0)
 						controller_saveAsText("arcades.csv", pListaArcades);
-
 	        	break;
 
 	        case 5:

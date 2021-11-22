@@ -14,8 +14,15 @@
 #include "Arcade.h"
 #include "LinkedList.h"
 
+#define CHAR_LEN	64
 
 //********************//
+
+/** \brief	Crea un nuevo espacio de memoria para un elemento arcade
+ *
+ * \return 	Retorna un nuevo elemento
+ *
+ */
 
 Arcade* arcade_new()
 {
@@ -23,6 +30,13 @@ Arcade* arcade_new()
 }
 
 //********************//
+
+/** \brief	Crea un nuevo espacio de memoria para un elemento arcade y le asigna valores
+ * \ param	char* recibe todos los parametros como array de char
+ *
+ * \ return	Devuelve un nuevo elemento arcade con los datos cargados
+ *
+ */
 
 Arcade* arcade_newParametros(char* idArcadeStr,char* nacStr,char* tipoStr,char* jugadoresStr,char* fichasStr,char* salonStr,char* juegoStr)
 {
@@ -33,12 +47,15 @@ Arcade* arcade_newParametros(char* idArcadeStr,char* nacStr,char* tipoStr,char* 
 
 	thisAux = (Arcade*) malloc(sizeof(Arcade));
 
+	//Valido los campos numericos
 	if(esNumerica(idArcadeStr)==0 && esNumerica(jugadoresStr)==0 && esNumerica(fichasStr)==0)
 	{
+		//Guardo el valor del tipo int
 		idArcadeAux = atoi(idArcadeStr);
 		fichasAux = atoi(fichasStr);
 		jugadoresAux = atoi(jugadoresStr);
 
+		//Asigno cada campo
 		arcade_setNac(thisAux, nacStr);
 		arcade_setIdArcade(thisAux, idArcadeAux);
 		arcade_setTipo(thisAux, tipoStr);
@@ -53,6 +70,13 @@ Arcade* arcade_newParametros(char* idArcadeStr,char* nacStr,char* tipoStr,char* 
 
 //********************//
 
+/** \brief	Elimina un elemento arcade y libera el espacio de memoria
+ * \ param	Arcade* puntero al arcade
+ *
+ * \ return	void
+ *
+ */
+
 void arcade_delete(Arcade* this)
 {
 	if(this!=NULL)
@@ -63,146 +87,346 @@ void arcade_delete(Arcade* this)
 
 //********************//
 
+/** \brief	Asigna valores al campo nombre del juego
+ * \ param	char* recibe el nombre del juego
+ *
+ * \ return	0 OK / -1 si arcade o nombre es NULL
+ *
+ */
+
 int arcade_setNombreJuego(Arcade* this,char* nombre)
 {
-	strncpy(this->nombreJuego,nombre,sizeof(this->nombreJuego));
-
-	return 0;
+	int retorno = -1;
+	if(this!=NULL && nombre!=NULL)
+	{
+		strncpy(this->nombreJuego,nombre,sizeof(this->nombreJuego));
+		retorno = 0;
+	}
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Asigna valores al campo nombre del salon
+ * \ param	char* recibe el nombre del salon
+ *
+ * \ return	0 OK / -1 si arcade o nombre es NULL
+ *
+ */
 
 int arcade_setNombreSalon(Arcade* this,char* nombreSalon)
 {
-	strncpy(this->nombreSalon,nombreSalon,sizeof(this->nombreSalon));
+	int retorno = -1;
+	if(this!=NULL && nombreSalon!=NULL)
+	{
+		strncpy(this->nombreSalon,nombreSalon,sizeof(this->nombreSalon));
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Asigna valores al campo nacionalidad del juego
+ * \ param	char* recibe el nombre del pais
+ *
+ * \ return	0 OK / -1 si arcade o nacionalidad es NULL
+ *
+ */
 
 int arcade_setNac(Arcade* this,char* nacionalidad)
 {
-	strncpy(this->nacionalidad,nacionalidad,sizeof(this->nacionalidad));
+	int retorno = -1;
+	if(this!=NULL && nacionalidad!=NULL)
+	{
+		strncpy(this->nacionalidad,nacionalidad,sizeof(this->nacionalidad));
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Asigna valores al campo tipo de audio
+ * \ param	char* recibe el tipo de audio
+ *
+ * \ return	0 OK / -1 si arcade o tipo es NULL
+ *
+ */
 
 int arcade_setTipo(Arcade* this,char* tipoAudio)
 {
-	strcpy(this->tipo,tipoAudio);
+	int retorno = -1;
+	if(this!=NULL && tipoAudio!=NULL)
+	{
+		strcpy(this->tipo,tipoAudio);
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
 
+/** \brief	Asigna valores al campo cantidad de jugadores
+ * \ param	int recibe la cantidad
+ *
+ * \ return	0 OK / -1 si arcade es NULL
+ *
+ */
+
 int arcade_setJugadores(Arcade* this,int cantidadJugadores)
 {
-	this->jugadores = cantidadJugadores;
+	int retorno = -1;
+	if(this!=NULL)
+	{
+		this->jugadores = cantidadJugadores;
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //************//
 
+/** \brief	Asigna valores al campo cantidad maxima de fichas
+ * \ param	int recibe la cantidad
+ *
+ * \ return	0 OK / -1 si arcade es NULL
+ *
+ */
+
 int arcade_setFichas(Arcade* this,int maxFichas)
 {
-	this->fichasMax = maxFichas;
+	int retorno = -1;
+	if(this!=NULL)
+	{
+		this->fichasMax = maxFichas;
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Asigna valores al campo ID arcade
+ * \ param	int recibe el ID
+ *
+ * \ return	0 OK / -1 si arcade es NULL
+ *
+ */
 
 int arcade_setIdArcade(Arcade* this,int idArcade)
 {
-	this->idArcade = idArcade;
+	int retorno = -1;
+	if(this!=NULL)
+	{
+		this->idArcade = idArcade;
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
 
+/** \brief	Asigna valores al campo ID salon
+ * \ param	int recibe el ID
+ *
+ * \ return	0 OK / -1 si arcade es NULL
+ *
+ */
+
 int arcade_setIdSalon(Arcade* this,int idSalon)
 {
-	this->idArcade = idSalon;
+	int retorno = -1;
+	if(this!=NULL)
+	{
+		this->idArcade = idSalon;
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //*******GETTERS*************//
 
+/** \brief	Devuelve por referencia el valor del campo nombre del juego de la lista
+ *
+ * \ param	Arcade* this puntero a la lista
+ * \ param	char* devuelve el nombre
+ *
+ * \ return	0 OK / -1 si arcade es NULL o char* es NULL
+ *
+ */
+
 int arcade_getNombreJuego(Arcade* this,char* nombreJuego)
 {
+	int retorno = -1;
+	if(this!=NULL && nombreJuego!=NULL)
+	{
 	//strncpy(nombre,this->nombre,sizeof(128));
-	strcpy(nombreJuego,this->nombreJuego);
+		strcpy(nombreJuego,this->nombreJuego);
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Devuelve por referencia el valor del campo nombre del salon de la lista
+ *
+ * \ param	Arcade* this puntero a la lista
+ * \ param	char* devuelve el nombre
+ *
+ * \ return	0 OK / -1 si arcade es NULL o char* es NULL
+ *
+ */
 
 int arcade_getNombreSalon(Arcade* this,char* nombreSalon)
 {
-	//strncpy(nombre,this->nombre,sizeof(128));
-	strcpy(nombreSalon,this->nombreSalon);
+	int retorno = -1;
+	if(this!=NULL && nombreSalon!=NULL)
+	{
+		//strncpy(nombre,this->nombre,sizeof(128));
+		strcpy(nombreSalon,this->nombreSalon);
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Devuelve por referencia el valor del campo ID arcade de la lista
+ *
+ * \ param	Arcade* this puntero a la lista
+ * \ param	int* Devuelve el valor
+ *
+ * \ return	0 OK / -1 si arcade es NULL
+ *
+ */
 
 int arcade_getIdArcade(Arcade* this,int* idArcade)
 {
-	*idArcade = this->idArcade;
+	int retorno = -1;
+	if(this!=NULL)
+	{
+		*idArcade = this->idArcade;
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Devuelve por referencia el valor del campo nacionalidad de la lista
+ *
+ * \ param	Arcade* this puntero a la lista
+ * \ param	char* devuelve el pais
+ *
+ * \ return	0 OK / -1 si arcade es NULL o char* es NULL
+ *
+ */
 
 int arcade_getNac(Arcade* this,char* nacionalidad)
 {
-	//strncpy(nacionalidad,this->nacionalidad,sizeof(this->nacionalidad));
-	strcpy(nacionalidad,this->nacionalidad);
+	int retorno = -1;
+	if(this!=NULL && nacionalidad!=NULL)
+	{
+		//strncpy(nacionalidad,this->nacionalidad,sizeof(this->nacionalidad));
+		strcpy(nacionalidad,this->nacionalidad);
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Devuelve por referencia el valor del campo tipo de audio de la lista
+ *
+ * \ param	Arcade* this puntero a la lista
+ * \ param	char* devuelve el tipo de aucio
+ *
+ * \ return	0 OK / -1 si arcade es NULL o char* es NULL
+ *
+ */
 
 int arcade_getTipo(Arcade* this,char* tipoAudio)
 {
-	//strncpy(tipoAudio,this->tipo,sizeof(this->tipo));
-	strcpy(tipoAudio,this->tipo);
-	return 0;
+	int retorno = -1;
+	if(this!=NULL && tipoAudio!=NULL)
+	{
+		//strncpy(tipoAudio,this->tipo,sizeof(this->tipo));
+		strcpy(tipoAudio,this->tipo);
+		retorno = 0;
+	}
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Devuelve por referencia el valor del campo cantidad de jugadores de la lista
+ *
+ * \ param	Arcade* this puntero a la lista
+ * \ param	int* Devuelve el valor
+ *
+ * \ return	0 OK / -1 si arcade es NULL
+ *
+ */
 
 int arcade_getJugadores(Arcade* this,int* cantidadJugadores)
 {
-	*cantidadJugadores = this->jugadores;
+	int retorno = -1;
+	if(this!=NULL)
+	{
+		*cantidadJugadores = this->jugadores;
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
 
 //********************//
+
+/** \brief	Devuelve por referencia el valor del campo maximo de fichas de la lista
+ *
+ * \ param	Arcade* this puntero a la lista
+ * \ param	int* Devuelve el valor
+ *
+ * \ return	0 OK / -1 si arcade es NULL
+ *
+ */
 
 int arcade_getFichas(Arcade* this,int* maxFichas)
 {
-	*maxFichas = this->fichasMax;
+	int retorno = -1;
+	if(this!=NULL)
+	{
+		*maxFichas = this->fichasMax;
+		retorno = 0;
+	}
 
-	return 0;
+	return retorno;
 }
-
 
 
 //********************//
 
+/** \brief	Funcion criterio. Compara nombre de juegos
+ *
+ * \ param	void* arcade 1
+ * \ param	void* arcade 2
+ *
+ * \ return	0 si son iguales / -1 si son distintos
+ *
+ */
 
 int arcade_comparaJuegos(void* juego1, void* juego2)
 {
@@ -210,8 +434,8 @@ int arcade_comparaJuegos(void* juego1, void* juego2)
 
 	Arcade* aAuxA = (Arcade*) juego1;
 	Arcade* aAuxB = (Arcade*) juego2;
-	char nombreAuxA[128];
-	char nombreAuxB[128];
+	char nombreAuxA[CHAR_LEN];
+	char nombreAuxB[CHAR_LEN];
 
 	if(arcade_getNombreJuego(aAuxA, nombreAuxA)==0 && arcade_getNombreJuego(aAuxB, nombreAuxB)==0)
 	{
@@ -224,6 +448,14 @@ int arcade_comparaJuegos(void* juego1, void* juego2)
 
 //********************//
 
+/** \brief	Funcion criterio. Compara nombre de paises
+ *
+ * \ param	void* arcade 1
+ * \ param	void* arcade 2
+ *
+ * \ return	0 si son iguales / 1 si A>B / -1 B>A
+ *
+ */
 
 int arcade_comparaPaises(void* juego1, void* juego2)
 {
@@ -231,8 +463,8 @@ int arcade_comparaPaises(void* juego1, void* juego2)
 
 	Arcade* aAuxA = (Arcade*) juego1;
 	Arcade* aAuxB = (Arcade*) juego2;
-	char nombreAuxA[128];
-	char nombreAuxB[128];
+	char nombreAuxA[CHAR_LEN];
+	char nombreAuxB[CHAR_LEN];
 
 	if(arcade_getNac(aAuxA, nombreAuxA)==0 && arcade_getNac(aAuxB, nombreAuxB)==0)
 	{
@@ -245,6 +477,14 @@ int arcade_comparaPaises(void* juego1, void* juego2)
 
 //********************//
 
+/** \brief	Funcion criterio. Compara ID de arcade
+ *
+ * \ param	void* arcade 1
+ * \ param	void* arcade 2
+ *
+ * \ return	0 si son iguales / 1 si A>B / -1 si B>A
+ *
+ */
 
 int arcade_comparaIdArcade(void* item1, void* item2)
 {
@@ -270,6 +510,14 @@ int arcade_comparaIdArcade(void* item1, void* item2)
 
 //********************//
 
+/** \brief	Genera un nuevo ID a partir del ID mas alto registrado
+ *
+ * \ param	LinkedList* puntero a la lista de arcades
+ *
+ * \ return	ID nuevo
+ *
+ */
+
 int arcade_generadorID(LinkedList* this)
 {
 	static int contador;
@@ -279,6 +527,13 @@ int arcade_generadorID(LinkedList* this)
 
 //********************//
 
+/** \brief	Funcion utilizada en ll_map para duplicar la cantidad maxima de fichas
+ *
+ * \ param	void* arcade
+ *
+ * \ return	 0 OK / -1 si no pudo guardar el valor
+ *
+ */
 
 int arcade_aumentaFichas(void* arcade)
 {
@@ -289,13 +544,22 @@ int arcade_aumentaFichas(void* arcade)
 		aAux = (Arcade*)arcade;
 		arcade_getFichas(aAux, &fichas);
 		fichas = fichas*2;
-		arcade_setFichas(aAux, fichas);
-
+		if(arcade_setFichas(aAux, fichas)==0)
+			retorno = 0;
 
 	return retorno;
 }
 
 //********************//
+
+/** \brief	Funcion criterio. Multiplayer
+ *
+ * \ param	void* arcade 1
+ *
+ * \ return	1 si el arcade es >1 jugador / -1 si es <2
+ *
+ */
+
 
 int arcade_multiPLayer(void* juego)
 {
@@ -316,6 +580,15 @@ int arcade_multiPLayer(void* juego)
 
 //********************//
 
+/** \brief	Devuelve el ID mas alto de los elementos la lista de arcades
+ *
+ * \ param	LinkedList* puntero a la lista
+ *
+ * \ return	ID mas alto
+ *
+ */
+
+
 int arcade_idMax(LinkedList* this)
 {
 	int retorno = -1;
@@ -331,7 +604,8 @@ int arcade_idMax(LinkedList* this)
 		for(i=0;i<ll_len(this);i++)
 		{
 			 aAux = ll_get(this, i);
-			 idAux = aAux->idArcade;
+			 //idAux = aAux->idArcade;
+			 arcade_getIdArcade(aAux, &idAux);
 
 			 if(idAux>idMax)
 			 {
@@ -346,21 +620,29 @@ int arcade_idMax(LinkedList* this)
 
 //********************//
 
+/** \brief	Imprime por pantalla la lista de los juegos que hay en la lista
+ *
+ * \ param	char* nombre del archivo que contiene la lista de juegos
+ * \ param	LinkedList* puntero a la lista
+ *
+ * \ return	0 si OK / -1 si hubo un error
+ *
+ */
 
 
 int arcade_imprimirJuegos(char* path , LinkedList* this)
 {
 	int retorno = -1;
 	int i;
-	char nombreAux[128];
+	char nombreAux[CHAR_LEN];
 	Arcade* aAux;
 	Arcade* aAux2;
-	FILE* pArch = fopen(path,"w");
+	FILE* pArch = fopen(path,"r");
 
-	if(path!=NULL && pArch!=NULL)
+	if(path!=NULL && pArch!=NULL && this!=NULL)
 	{
 
-		ll_sort(this, arcade_comparaJuegos, 1); //Ordeno los juegos
+		ll_sort(this, arcade_comparaJuegos, 1); //Ordeno los juegos por nombre
 
 
 		printf("\nLISTA DE JUEGOS\n");

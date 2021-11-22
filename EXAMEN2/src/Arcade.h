@@ -9,15 +9,17 @@
 #ifndef ARCADE_H_
 #define ARCADE_H_
 
+#define CHAR_LEN	64
+
 typedef struct
 {
-	char nacionalidad[128];
-	char tipo[128];
+	char nacionalidad[CHAR_LEN];
+	char tipo[CHAR_LEN];
 	int jugadores;
 	int fichasMax;
-	char nombreJuego[128];
+	char nombreJuego[CHAR_LEN];
 	int idArcade;
-	char nombreSalon[128];
+	char nombreSalon[CHAR_LEN];
 }Arcade;
 
 

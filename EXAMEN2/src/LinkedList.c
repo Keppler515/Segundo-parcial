@@ -11,7 +11,9 @@
 #include <string.h>
 #include "LinkedList.h"
 
+#define CHAR_LEN	64
 
+//PRIVADAS
 static Node* getNode(LinkedList* this, int nodeIndex);
 static int addNode(LinkedList* this, int nodeIndex,void* pElement);
 
@@ -176,6 +178,7 @@ int ll_add(LinkedList* this, void* pElement)
 
     if(this!=NULL)
     {
+    	//Agrega un nodo en la lista con el elemento ingresado
     	returnAux = addNode(this, this->size, pElement);
     }
 
@@ -563,7 +566,7 @@ LinkedList* ll_clone(LinkedList* this)
 
 
 /** \brief Ordena los elementos de la lista utilizando la funcion criterio recibida como parametro
- * \param pList LinkedList* Puntero a la lista
+ * \param this LinkedList* Puntero a la lista
  * \param pFunc (*pFunc) Puntero a la funcion criterio
  * \param order int  [1] Indica orden ascendente - [0] Indica orden descendente
  * \return int Retorna  (-1) Error: si el puntero a la listas es NULL
@@ -592,7 +595,7 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
     			aux2 = ll_get(this, i+1);
     			criterio = pFunc(aux1,aux2); //Guardo el valor de retorno de la funcion criterio
 
-    			if(order == 1)
+    			if(order == 1)	//Orden ascendente
     			{
     				if(criterio == 1)
     				{
@@ -601,9 +604,12 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 						aux1 = aux2;
 						aux2 = buffer;
 					}
+    				//Escribo los valores ordenados
+					ll_set(this, i, aux1);
+					ll_set(this, i+1, aux2);
     			}
 
-    			 if(order == 0)
+    			 if(order == 0) //Orden descendente
     			{
     				if(criterio == -1)
     				{
@@ -612,10 +618,10 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 						aux2 = aux1;
 						aux1 = buffer;
     				}
+				//Escribo los valores ordenados
+				ll_set(this, i, aux2);
+				ll_set(this, i+1, aux1);
     			}
-    		//Escribo los valores ordenados
-			ll_set(this, i, aux1);
-			ll_set(this, i+1, aux2);
     		}
 
     	}while(flag);
@@ -627,6 +633,14 @@ int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order)
 
 
 //******************************//
+
+/** \brief 	Toma cada uno de los elementos de la lista, y se lo pasa a la funcion
+ * 			para que haga algo con ese elemento (ej : leer un campo y cambiar el valor)
+ *
+ * \param 	this LinkedList* puntero a la lista
+ * \param	pFunc puntero a funcion
+ * \return	0 OK / -1 Mal
+ */
 
 int ll_map(LinkedList* this, int(*pFunc)(void*))
 {
@@ -658,6 +672,12 @@ int ll_map(LinkedList* this, int(*pFunc)(void*))
 
 //******************************//
 
+/** \brief	Crea otra linkedlist con los filtros indicados.
+ *
+ * \param 	this LinkedList* puntero a la lista
+ * \param	pFunc puntero a funcion criterio
+ * \return	Nueva lista con los filtros indicados
+ */
 
 LinkedList* ll_filter(LinkedList* this, int(*pFunc)(void*))
 {
@@ -668,7 +688,7 @@ LinkedList* ll_filter(LinkedList* this, int(*pFunc)(void*))
 
 	if(this!=NULL && pFunc!=NULL)
 	{
-		listaFiltrada = ll_newLinkedList();
+		listaFiltrada = ll_newLinkedList(); //Creo una nueva lista
 
 		//Recorro mi lista
 		for(int i=0;i<ll_len(this);i++)

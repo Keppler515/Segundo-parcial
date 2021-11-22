@@ -14,6 +14,8 @@
 #include "utn_biblioteca.h"
 #include "parser.h"
 
+#define CHAR_LEN	64
+
 /** \brief Carga los datos de los arcades desde el archivo arcades.csv (modo texto).
  *
  * \param path char* recibe el nombre del archivo
@@ -28,11 +30,11 @@ int controller_loadFile(char* path , LinkedList* pListaArcades)
 
 	if(path!=NULL && pListaArcades!=NULL)
 	{
-		if((pArch = fopen(path,"r"))!=NULL)
+		if((pArch = fopen(path,"r"))!=NULL)	//Si pudo abrir el archivo...
 		{
-			if(parser_ArcadeFromText(pArch, pListaArcades)==0)
+			if(parser_ArcadeFromText(pArch, pListaArcades)==0) //Parseo el archivo y lo guardo en la lista
 			{
-				fclose(pArch);
+				fclose(pArch);	//Cierro el archivo
 				retorno = 0;
 				puts("Archivo cargado correctamente\n");
 			}
@@ -88,13 +90,13 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 int controller_addArcade(LinkedList* pListaArcades)
 {
 	int retorno = -1;
-	char nombreSalonAux[128];
-	char nacionAux[128];
-	char nombreJuegoAux[128];
+	char nombreSalonAux[CHAR_LEN];
+	char nacionAux[CHAR_LEN];
+	char nombreJuegoAux[CHAR_LEN];
 	int idArcadeAux;
 	int tipoAux;
-	char mono[128]="MONO";
-	char estereo[128]="ESTEREO";
+	char mono[CHAR_LEN]="MONO";
+	char estereo[CHAR_LEN]="ESTEREO";
 	int fichasAux;
 	int jugadoresAux;
 	Arcade* thisAux = NULL;
@@ -104,12 +106,12 @@ int controller_addArcade(LinkedList* pListaArcades)
 	{
 		thisAux = arcade_new();
 
-		if(	utn_getTextAlfanumerico(nacionAux, 128, "Nacionalidad: ", "ERROR\n")==0 &&
+		if(	utn_getTextAlfanumerico(nacionAux, CHAR_LEN, "Nacionalidad: ", "ERROR\n")==0 &&
 			utn_getNumero(&tipoAux, "1) MONO\n2) ESTEREO\n", "ERROR\n")==0 &&
 			utn_getNumero(&jugadoresAux, "Cantidad de jugadores: ", "ERROR\n")==0 &&
 			utn_getNumero(&fichasAux, "Maximo de fichas: ", "ERROR\n")==0 &&
-			utn_getTextAlfanumerico(nombreSalonAux, 128, "Salon: ", "ERROR\n")==0 &&
-			utn_getTextAlfanumerico(nombreJuegoAux, 128, "Juego: ", "ERROR\n")==0)
+			utn_getTextAlfanumerico(nombreSalonAux, CHAR_LEN, "Salon: ", "ERROR\n")==0 &&
+			utn_getTextAlfanumerico(nombreJuegoAux, CHAR_LEN, "Juego: ", "ERROR\n")==0)
 		{
 			idArcadeAux = arcade_generadorID(pListaArcades)+1;
 
@@ -153,10 +155,10 @@ int controller_editArcade(LinkedList* pListaArcades)
 	int i;
 	int idAux;
 	int idAuxBuscado;
-	char nombreJuegoAux[128];
-	char nombreSalonAux[128];
-	char nacionAux[128];
-	char tipoAux[128];
+	char nombreJuegoAux[CHAR_LEN];
+	char nombreSalonAux[CHAR_LEN];
+	char nacionAux[CHAR_LEN];
+	char tipoAux[CHAR_LEN];
 	int opcionAux;
 	int fichasAux;
 	int jugadoresAux;
@@ -197,7 +199,7 @@ int controller_editArcade(LinkedList* pListaArcades)
 			}
 		}
 
-		if(flagExiste==1)
+		if(flagExiste==1) //Si el arcade existe...
 		{
 			do
 			{
@@ -216,7 +218,7 @@ int controller_editArcade(LinkedList* pListaArcades)
 
 						case 2:
 							arcade_imprimirJuegos("lista_juegos.txt", pListaArcades);
-							utn_getTextAlfanumerico(nombreJuegoAux, 128, "\nNuevo juego: ", "ERROR\n");
+							utn_getTextAlfanumerico(nombreJuegoAux, CHAR_LEN, "\nNuevo juego: ", "ERROR\n");
 							arcade_setNombreJuego(aux, nombreJuegoAux);
 							puts("\nDatos modificados correctamente\n");
 							break;
@@ -247,10 +249,10 @@ int controller_removeArcade(LinkedList* pListaArcades)
 	int i;
 	int idAux;
 	int idAuxBuscado;
-	char nombreJuegoAux[128];
-	char nombreSalonAux[128];
-	char nacionAux[128];
-	char tipoAux[128];
+	char nombreJuegoAux[CHAR_LEN];
+	char nombreSalonAux[CHAR_LEN];
+	char nacionAux[CHAR_LEN];
+	char tipoAux[CHAR_LEN];
 	int opcionAux;
 	int fichasAux;
 	int jugadoresAux;
@@ -265,29 +267,30 @@ int controller_removeArcade(LinkedList* pListaArcades)
 		{
 			for(i=0;i<ll_len(pListaArcades);i++)
 			{
-				aux = ll_get(pListaArcades, i);
+				aux = ll_get(pListaArcades, i); //Guardo el arcade
 
-				arcade_getIdArcade(aux, &idAux);
-
-				if(idAuxBuscado == idAux)
+				if(arcade_getIdArcade(aux, &idAux)==0) //Busco el ID en el arcade y lo guardo
 				{
-					indexAux = i;
-					flagExiste = 1;
-					arcade_getFichas(aux, &fichasAux);
-					arcade_getJugadores(aux, &jugadoresAux);
-					arcade_getNac(aux, nacionAux);
-					arcade_getNombreJuego(aux, nombreJuegoAux);
-					arcade_getNombreSalon(aux, nombreSalonAux);
-					arcade_getTipo(aux, tipoAux);
+				if(idAuxBuscado == idAux) //Comparo los ID y si son iguales existe y muestro los datos
+					{
+						indexAux = i;
+						flagExiste = 1;
+						arcade_getFichas(aux, &fichasAux);
+						arcade_getJugadores(aux, &jugadoresAux);
+						arcade_getNac(aux, nacionAux);
+						arcade_getNombreJuego(aux, nombreJuegoAux);
+						arcade_getNombreSalon(aux, nombreSalonAux);
+						arcade_getTipo(aux, tipoAux);
 
-					printf(	"\nID: %d\n"
-							"Nacionalidad: %s\n"
-							"Tipo de sonido: %s\n"
-							"Cantidad de jugadores: %d\n"
-							"Maxima cantidad de fichas: %d\n"
-							"Nombre del salon: %s\n"
-							"Nombre del juego: %s\n",idAux,nacionAux,tipoAux,jugadoresAux,fichasAux,nombreSalonAux,nombreJuegoAux);
-					break;
+						printf(	"\nID: %d\n"
+								"Nacionalidad: %s\n"
+								"Tipo de sonido: %s\n"
+								"Cantidad de jugadores: %d\n"
+								"Maxima cantidad de fichas: %d\n"
+								"Nombre del salon: %s\n"
+								"Nombre del juego: %s\n",idAux,nacionAux,tipoAux,jugadoresAux,fichasAux,nombreSalonAux,nombreJuegoAux);
+						break;
+					}
 				}
 			}
 
@@ -302,8 +305,8 @@ int controller_removeArcade(LinkedList* pListaArcades)
 						switch(opcionAux)
 						{
 						case 1:
-							arcade_delete(aux);
-							ll_remove(pListaArcades, indexAux);
+							arcade_delete(aux); //Elimino el arcade y libero el espacio
+							ll_remove(pListaArcades, indexAux); //Elimino el nodo y enlazo el anterior con el siguiente para que siga la cadena
 							retorno = 0;
 							puts("Datos eliminados correctamente\n");
 							break;
@@ -314,7 +317,7 @@ int controller_removeArcade(LinkedList* pListaArcades)
 						}
 					}
 					break;
-				}while(opcionAux!=1||opcionAux!=2);
+				}while(opcionAux!=1 && opcionAux!=2);
 			}
 			else
 				puts("\nID inexistente o eliminado\n");
@@ -334,10 +337,10 @@ int controller_ListArcade(LinkedList* pListaArcades)
 {
 	int i;
 	int idAux;
-	char nombreJuegoAux[128];
-	char nombreSalonAux[128];
-	char nacionAux[128];
-	char tipoAux[128];
+	char nombreJuegoAux[CHAR_LEN];
+	char nombreSalonAux[CHAR_LEN];
+	char nacionAux[CHAR_LEN];
+	char tipoAux[CHAR_LEN];
 	int fichasAux;
 	int jugadoresAux;
 	int retorno = -1;
@@ -391,9 +394,8 @@ int controller_sortArcade(LinkedList* pListaArcades)
 				{
 					case 1:
 					{
-						//NOTA: OPCION DESC TARDA MUUUUCHO. NO SE SI FUNCIONA
 						puts("\nOrdenando...\n");
-						ll_sort(pListaArcades, arcade_comparaJuegos, 1);
+						ll_sort(pListaArcades, arcade_comparaJuegos, 1); //Llamo a la funcion que ordena y le paso por parametro la funcion criterio
 						puts("Lista ordenada\n");
 						retorno = 0;
 						break;
@@ -416,6 +418,14 @@ int controller_sortArcade(LinkedList* pListaArcades)
 						puts("Lista ordenada\n");
 						retorno = 0;
 						break;
+
+						//NOTA: OPCION DESCENDENTE TARDA MUUUUCHO. NO SE SI FUNCIONA
+					/*	puts("\nOrdenando...\n");
+						ll_sort(pListaArcades, arcade_comparaJuegos, 0);
+						puts("Lista ordenada\n");
+						retorno = 0;
+						break;
+					*/
 				}
 				break;
 			}
@@ -443,17 +453,17 @@ int controller_saveAsText(char* path , LinkedList* pListaArcades)
 	int idAux;
 	int fichasAux;
 	int jugadoresAux;
-	char nacionAux[128];
-	char nombreJuegoAux[128];
-	char nombreSalonAux[128];
-	char tipoAux[128];
+	char nacionAux[CHAR_LEN];
+	char nombreJuegoAux[CHAR_LEN];
+	char nombreSalonAux[CHAR_LEN];
+	char tipoAux[CHAR_LEN];
 	Arcade* aAux;
 	FILE* pArch = fopen(path,"w");
 
 	if(path!=NULL && pArch!=NULL)
 	{
 
-		ll_sort(pListaArcades, arcade_comparaIdArcade, 1); //Ordeno los juegos
+		ll_sort(pListaArcades, arcade_comparaIdArcade, 1); //Ordeno los juegos por ID
 
 		fprintf(pArch,"ID,NACIONALIDAD,TIPO_SONIDO,CANT_JUGADORES,FICHAS_MAX,SALON,JUEGO\n");
 
@@ -491,7 +501,7 @@ int controller_saveGamesText(char* path , LinkedList* pListaArcades)
 {
 	int retorno = -1;
 	int i;
-	char nombreAux[128];
+	char nombreAux[CHAR_LEN];
 	Arcade* aAux;
 	Arcade* aAux2;
 	FILE* pArch = fopen(path,"w");
@@ -507,7 +517,7 @@ int controller_saveGamesText(char* path , LinkedList* pListaArcades)
 		{
 			aAux = ll_get(pListaArcades, i);
 			aAux2 = ll_get(pListaArcades, i+1);
-			if(strcmp(aAux->nombreJuego,aAux2->nombreJuego)!=0)
+			if(strcmp(aAux->nombreJuego,aAux2->nombreJuego)!=0) //Si A==B==C!=D copio C
 			{
 				arcade_getNombreJuego(aAux, nombreAux);
 				fprintf(pArch,"%s\n",nombreAux);
@@ -533,13 +543,13 @@ int controller_saveMultiplayer(char* path , LinkedList* pListaArcades)
 {
 	int retorno = -1;
 	int i;
-	char nombreJuegoAux[128];
-	char nombreSalonAux[128];
-	char tipoAux[128];
+	char nombreJuegoAux[CHAR_LEN];
+	char nombreSalonAux[CHAR_LEN];
+	char tipoAux[CHAR_LEN];
 	int jugadoresAux;
 	int idAux;
 	int fichasAux;
-	char nacionAux[128];
+	char nacionAux[CHAR_LEN];
 	Arcade* aAux;
 	FILE* pArch = fopen(path,"w");
 	LinkedList* lAux;
@@ -548,6 +558,7 @@ int controller_saveMultiplayer(char* path , LinkedList* pListaArcades)
 	{
 
 		ll_sort(pListaArcades, arcade_comparaJuegos, 1);
+		//Guardo el retorno de filter en una lista auxiliar, asigno los valores y guardo en un archivo nuevo
 		lAux = ll_filter(pListaArcades, arcade_multiPLayer);
 
 		fprintf(pArch,"ID,NACIONALIDAD,TIPO_SONIDO,CANT_JUGADORES,FICHAS_MAX,SALON,JUEGO\n");
@@ -643,6 +654,7 @@ int controller_aumentarFichas(LinkedList* this)
 
 	if(this!=NULL)
 	{
+		//map recorre la lista y asigna a acda arcade los valores que retorna la funcion que duplica las fichas
 		if(ll_map(this, arcade_aumentaFichas)==0)
 		{
 			retorno = 0;
