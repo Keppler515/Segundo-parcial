@@ -1,5 +1,4 @@
 LISTA DE JUEGOS
-Apruebenme
 Arkanoid
 Asteroids
 Bubble Bobble
@@ -10,13 +9,19 @@ Fifa 22
 Frogger
 Galaga
 Guitar Hero
+Katiushka
+Mappy
 Metal Slug
 Mortal Kombat
 Out Run
 Pacman
 Pong
 Space Invaders
+Squid Game
 Star Wars
 Street Fighter II
+Super Mario Bross 2
 Tetris
 Tron
+Virtua Cop
+Zapato

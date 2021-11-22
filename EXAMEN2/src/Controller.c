@@ -106,8 +106,11 @@ int controller_addArcade(LinkedList* pListaArcades)
 	{
 		thisAux = arcade_new();
 
+			do
+			{
+				utn_getNumero(&tipoAux, "Tipo de audio:\n1) MONO\n2) ESTEREO\n", "ERROR\n");
+			}while(tipoAux!=1 && tipoAux!=2);
 		if(	utn_getTextAlfanumerico(nacionAux, CHAR_LEN, "Nacionalidad: ", "ERROR\n")==0 &&
-			utn_getNumero(&tipoAux, "1) MONO\n2) ESTEREO\n", "ERROR\n")==0 &&
 			utn_getNumero(&jugadoresAux, "Cantidad de jugadores: ", "ERROR\n")==0 &&
 			utn_getNumero(&fichasAux, "Maximo de fichas: ", "ERROR\n")==0 &&
 			utn_getTextAlfanumerico(nombreSalonAux, CHAR_LEN, "Salon: ", "ERROR\n")==0 &&
@@ -505,6 +508,7 @@ int controller_saveGamesText(char* path , LinkedList* pListaArcades)
 	Arcade* aAux;
 	Arcade* aAux2;
 	FILE* pArch = fopen(path,"w");
+	int flagPrimero = 0;
 
 	if(path!=NULL && pArch!=NULL)
 	{
@@ -513,13 +517,26 @@ int controller_saveGamesText(char* path , LinkedList* pListaArcades)
 
 		fprintf(pArch,"LISTA DE JUEGOS\n");
 
-		for(i=0;i<ll_len(pListaArcades)-1;i++)
+
+		if(flagPrimero==0)	//Copio el primero
 		{
+			for(i=0;i<1;i++)
+			{
+				aAux = ll_get(pListaArcades, i);
+				arcade_getNombreJuego(aAux, nombreAux);
+				fprintf(pArch,"%s\n",nombreAux);
+				flagPrimero = 1;
+			}
+		}
+
+		for(i=1;i<ll_len(pListaArcades)-1;i++)
+		{
+
 			aAux = ll_get(pListaArcades, i);
 			aAux2 = ll_get(pListaArcades, i+1);
-			if(strcmp(aAux->nombreJuego,aAux2->nombreJuego)!=0) //Si A==B==C!=D copio C
+			if(strcmp(aAux->nombreJuego,aAux2->nombreJuego)!=0) //Si B==A, C==B, D!=C copio D
 			{
-				arcade_getNombreJuego(aAux, nombreAux);
+				arcade_getNombreJuego(aAux2, nombreAux);
 				fprintf(pArch,"%s\n",nombreAux);
 			}
 		}
