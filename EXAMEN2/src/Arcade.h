@@ -12,7 +12,7 @@
 typedef struct
 {
 	char nacionalidad[128];
-	int tipo;
+	char tipo[128];
 	int jugadores;
 	int fichasMax;
 	char nombreJuego[128];
@@ -34,8 +34,8 @@ int arcade_getNombreJuego(Arcade* this,char* nombreJuego);
 int arcade_setNac(Arcade* this,char* nacionalidad);
 int arcade_getNac(Arcade* this,char* nacionalidad);
 
-int arcade_setTipo(Arcade* this,int tipoAudio);
-int arcade_getTipo(Arcade* this,int* tipoAudio);
+int arcade_setTipo(Arcade* this,char* tipoAudio);
+int arcade_getTipo(Arcade* this,char* tipoAudio);
 
 int arcade_setJugadores(Arcade* this,int cantidadJugadores);
 int arcade_getJugadores(Arcade* this,int* cantidadJugadores);
@@ -59,5 +59,7 @@ int arcade_aumentaFichas(void* arcade);
 int arcade_multiPLayer(void* juego);
 
 int arcade_idMax(LinkedList* this);
+
+int arcade_imprimirJuegos(char* path , LinkedList* this);
 
 #endif /* ARCADE_H_ */

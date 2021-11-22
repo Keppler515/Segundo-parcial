@@ -93,6 +93,8 @@ int controller_addArcade(LinkedList* pListaArcades)
 	char nombreJuegoAux[128];
 	int idArcadeAux;
 	int tipoAux;
+	char mono[128]="MONO";
+	char estereo[128]="ESTEREO";
 	int fichasAux;
 	int jugadoresAux;
 	Arcade* thisAux = NULL;
@@ -111,8 +113,14 @@ int controller_addArcade(LinkedList* pListaArcades)
 		{
 			idArcadeAux = arcade_generadorID(pListaArcades)+1;
 
+			if(tipoAux==1)
+			{
+				arcade_setTipo(thisAux, mono);
+			}
+			else if(tipoAux==2)
+				arcade_setTipo(thisAux, estereo);
+
 			arcade_setNac(thisAux, nacionAux);
-			arcade_setTipo(thisAux, tipoAux);
 			arcade_setJugadores(thisAux, jugadoresAux);
 			arcade_setFichas(thisAux, fichasAux);
 			arcade_setNombreSalon(thisAux, nombreSalonAux);
@@ -148,7 +156,7 @@ int controller_editArcade(LinkedList* pListaArcades)
 	char nombreJuegoAux[128];
 	char nombreSalonAux[128];
 	char nacionAux[128];
-	int tipoAux;
+	char tipoAux[128];
 	int opcionAux;
 	int fichasAux;
 	int jugadoresAux;
@@ -175,11 +183,11 @@ int controller_editArcade(LinkedList* pListaArcades)
 					arcade_getNac(aux, nacionAux);
 					arcade_getNombreJuego(aux, nombreJuegoAux);
 					arcade_getNombreSalon(aux, nombreSalonAux);
-					arcade_getTipo(aux, &tipoAux);
+					arcade_getTipo(aux, tipoAux);
 
 					printf(	"\nID: %d\n"
 							"Nacionalidad: %s\n"
-							"Tipo de sonido: %d\n"
+							"Tipo de sonido: %s\n"
 							"Cantidad de jugadores: %d\n"
 							"Maxima cantidad de fichas: %d\n"
 							"Nombre del salon: %s\n"
@@ -207,8 +215,8 @@ int controller_editArcade(LinkedList* pListaArcades)
 							break;
 
 						case 2:
-							puts("\nIMPRIMIR LOS JUEGOS\n");
-							utn_getTextAlfanumerico(nombreJuegoAux, 128, "Nuevo juego: ", "ERROR\n");
+							arcade_imprimirJuegos("lista_juegos.txt", pListaArcades);
+							utn_getTextAlfanumerico(nombreJuegoAux, 128, "\nNuevo juego: ", "ERROR\n");
 							arcade_setNombreJuego(aux, nombreJuegoAux);
 							puts("\nDatos modificados correctamente\n");
 							break;
@@ -242,7 +250,7 @@ int controller_removeArcade(LinkedList* pListaArcades)
 	char nombreJuegoAux[128];
 	char nombreSalonAux[128];
 	char nacionAux[128];
-	int tipoAux;
+	char tipoAux[128];
 	int opcionAux;
 	int fichasAux;
 	int jugadoresAux;
@@ -270,11 +278,11 @@ int controller_removeArcade(LinkedList* pListaArcades)
 					arcade_getNac(aux, nacionAux);
 					arcade_getNombreJuego(aux, nombreJuegoAux);
 					arcade_getNombreSalon(aux, nombreSalonAux);
-					arcade_getTipo(aux, &tipoAux);
+					arcade_getTipo(aux, tipoAux);
 
 					printf(	"\nID: %d\n"
 							"Nacionalidad: %s\n"
-							"Tipo de sonido: %d\n"
+							"Tipo de sonido: %s\n"
 							"Cantidad de jugadores: %d\n"
 							"Maxima cantidad de fichas: %d\n"
 							"Nombre del salon: %s\n"
@@ -329,7 +337,7 @@ int controller_ListArcade(LinkedList* pListaArcades)
 	char nombreJuegoAux[128];
 	char nombreSalonAux[128];
 	char nacionAux[128];
-	int tipoAux;
+	char tipoAux[128];
 	int fichasAux;
 	int jugadoresAux;
 	int retorno = -1;
@@ -347,9 +355,9 @@ int controller_ListArcade(LinkedList* pListaArcades)
 			arcade_getNac(aAux, nacionAux);
 			arcade_getNombreJuego(aAux, nombreJuegoAux);
 			arcade_getNombreSalon(aAux, nombreSalonAux);
-			arcade_getTipo(aAux, &tipoAux);
+			arcade_getTipo(aAux, tipoAux);
 
-			printf(	"%d, %s, %d, %d, %d, %s, %s\n",idAux,nacionAux,tipoAux,jugadoresAux,fichasAux,nombreSalonAux,nombreJuegoAux);
+			printf(	"%d, %s, %s, %d, %d, %s, %s\n",idAux,nacionAux,tipoAux,jugadoresAux,fichasAux,nombreSalonAux,nombreJuegoAux);
 
 		}
 		printf("\n");
@@ -438,7 +446,7 @@ int controller_saveAsText(char* path , LinkedList* pListaArcades)
 	char nacionAux[128];
 	char nombreJuegoAux[128];
 	char nombreSalonAux[128];
-	int tipoAux;
+	char tipoAux[128];
 	Arcade* aAux;
 	FILE* pArch = fopen(path,"w");
 
@@ -459,9 +467,9 @@ int controller_saveAsText(char* path , LinkedList* pListaArcades)
 			arcade_getNac(aAux, nacionAux);
 			arcade_getNombreJuego(aAux, nombreJuegoAux);
 			arcade_getNombreSalon(aAux, nombreSalonAux);
-			arcade_getTipo(aAux, &tipoAux);
+			arcade_getTipo(aAux, tipoAux);
 
-			fprintf(pArch,"%d,%s,%d,%d,%d,%s,%s\n",idAux,nacionAux,tipoAux,jugadoresAux,fichasAux,nombreSalonAux,nombreJuegoAux);
+			fprintf(pArch,"%d,%s,%s,%d,%d,%s,%s\n",idAux,nacionAux,tipoAux,jugadoresAux,fichasAux,nombreSalonAux,nombreJuegoAux);
 
 		}
 
@@ -490,9 +498,8 @@ int controller_saveGamesText(char* path , LinkedList* pListaArcades)
 
 	if(path!=NULL && pArch!=NULL)
 	{
-
-		ll_sort(pListaArcades, arcade_comparaJuegos, 1); //Ordeno los juegos
-
+		//Ordeno los juegos para comparar una posicion con la siguiente
+		ll_sort(pListaArcades, arcade_comparaJuegos, 1);
 
 		fprintf(pArch,"LISTA DE JUEGOS\n");
 
@@ -506,7 +513,7 @@ int controller_saveGamesText(char* path , LinkedList* pListaArcades)
 				fprintf(pArch,"%s\n",nombreAux);
 			}
 		}
-    	puts("archivo generado");
+    	puts("Guardado\n");
 		fclose(pArch);
 		retorno = 0;
 	}
@@ -528,7 +535,7 @@ int controller_saveMultiplayer(char* path , LinkedList* pListaArcades)
 	int i;
 	char nombreJuegoAux[128];
 	char nombreSalonAux[128];
-	int tipoAux;
+	char tipoAux[128];
 	int jugadoresAux;
 	int idAux;
 	int fichasAux;
@@ -555,9 +562,9 @@ int controller_saveMultiplayer(char* path , LinkedList* pListaArcades)
 			arcade_getNac(aAux, nacionAux);
 			arcade_getNombreJuego(aAux, nombreJuegoAux);
 			arcade_getNombreSalon(aAux, nombreSalonAux);
-			arcade_getTipo(aAux, &tipoAux);
+			arcade_getTipo(aAux, tipoAux);
 
-			fprintf(pArch,"%d,%s,%d,%d,%d,%s,%s\n",idAux,nacionAux,tipoAux,jugadoresAux,fichasAux,nombreSalonAux,nombreJuegoAux);
+			fprintf(pArch,"%d,%s,%s,%d,%d,%s,%s\n",idAux,nacionAux,tipoAux,jugadoresAux,fichasAux,nombreSalonAux,nombreJuegoAux);
 
 		}
 		puts("Archivo generado");

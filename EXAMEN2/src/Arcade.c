@@ -28,22 +28,20 @@ Arcade* arcade_newParametros(char* idArcadeStr,char* nacStr,char* tipoStr,char* 
 {
 	Arcade* thisAux;
 	int idArcadeAux;
-	int tipoAux;
 	int fichasAux;
 	int jugadoresAux;
 
 	thisAux = (Arcade*) malloc(sizeof(Arcade));
 
-	if(esNumerica(idArcadeStr)==0 && /*esNumerica(tipoStr)==0 && */esNumerica(jugadoresStr)==0 && esNumerica(fichasStr)==0)
+	if(esNumerica(idArcadeStr)==0 && esNumerica(jugadoresStr)==0 && esNumerica(fichasStr)==0)
 	{
 		idArcadeAux = atoi(idArcadeStr);
-		tipoAux = atoi(tipoStr);
 		fichasAux = atoi(fichasStr);
 		jugadoresAux = atoi(jugadoresStr);
 
 		arcade_setNac(thisAux, nacStr);
 		arcade_setIdArcade(thisAux, idArcadeAux);
-		arcade_setTipo(thisAux, tipoAux);
+		arcade_setTipo(thisAux, tipoStr);
 		arcade_setJugadores(thisAux, jugadoresAux);
 		arcade_setFichas(thisAux, fichasAux);
 		arcade_setNombreJuego(thisAux, juegoStr);
@@ -92,9 +90,9 @@ int arcade_setNac(Arcade* this,char* nacionalidad)
 
 //********************//
 
-int arcade_setTipo(Arcade* this,int tipoAudio)
+int arcade_setTipo(Arcade* this,char* tipoAudio)
 {
-	this->tipo = tipoAudio;
+	strcpy(this->tipo,tipoAudio);
 
 	return 0;
 }
@@ -168,7 +166,7 @@ int arcade_getIdArcade(Arcade* this,int* idArcade)
 
 int arcade_getNac(Arcade* this,char* nacionalidad)
 {
-	//strncpy(nombre,this->nombre,sizeof(128));
+	//strncpy(nacionalidad,this->nacionalidad,sizeof(this->nacionalidad));
 	strcpy(nacionalidad,this->nacionalidad);
 
 	return 0;
@@ -176,10 +174,10 @@ int arcade_getNac(Arcade* this,char* nacionalidad)
 
 //********************//
 
-int arcade_getTipo(Arcade* this,int* tipoAudio)
+int arcade_getTipo(Arcade* this,char* tipoAudio)
 {
-	*tipoAudio = this->tipo;
-
+	//strncpy(tipoAudio,this->tipo,sizeof(this->tipo));
+	strcpy(tipoAudio,this->tipo);
 	return 0;
 }
 
@@ -347,5 +345,42 @@ int arcade_idMax(LinkedList* this)
 
 
 //********************//
+
+
+
+int arcade_imprimirJuegos(char* path , LinkedList* this)
+{
+	int retorno = -1;
+	int i;
+	char nombreAux[128];
+	Arcade* aAux;
+	Arcade* aAux2;
+	FILE* pArch = fopen(path,"w");
+
+	if(path!=NULL && pArch!=NULL)
+	{
+
+		ll_sort(this, arcade_comparaJuegos, 1); //Ordeno los juegos
+
+
+		printf("\nLISTA DE JUEGOS\n");
+
+		for(i=0;i<ll_len(this)-1;i++)
+		{
+			aAux = ll_get(this, i);
+			aAux2 = ll_get(this, i+1);
+			if(strcmp(aAux->nombreJuego,aAux2->nombreJuego)!=0)
+			{
+				arcade_getNombreJuego(aAux, nombreAux);
+				printf("%s\n",nombreAux);
+			}
+		}
+		fclose(pArch);
+		retorno = 0;
+	}
+
+    return retorno;
+}
+
 
 

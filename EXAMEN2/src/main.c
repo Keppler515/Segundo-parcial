@@ -45,6 +45,7 @@ int main()
 	    if(controller_loadFile("arcades.csv", pListaArcades)==0)
 	    	puts("ARCHIVO OK");
 
+
 	    do{
 
 	    	controller_menu(&option);
@@ -54,19 +55,22 @@ int main()
 	        {
 	        case 2:
 	        	if(controller_addArcade(pListaArcades)==0)
-	        		controller_saveAsText("arcades.csv", pListaArcades);
+	        		if(controller_saveAsText("arcades.csv", pListaArcades)==0)
+	        			controller_saveGamesText("lista_juegos.csv", pListaArcades);
 	        	break;
 
 	        case 3:
 	        	if(controller_ListArcade(pListaArcades)==0)
 	          		if(controller_editArcade(pListaArcades)==0)
-	        			controller_saveAsText("arcades.csv", pListaArcades);
+	        			if(controller_saveAsText("arcades.csv", pListaArcades)==0)
+	        				controller_saveGamesText("lista_juegos.csv", pListaArcades);
 	        	break;
 
 	        case 4:
 	        	if(controller_ListArcade(pListaArcades)==0)
 					if(controller_removeArcade(pListaArcades)==0)
 						controller_saveAsText("arcades.csv", pListaArcades);
+
 	        	break;
 
 	        case 5:
