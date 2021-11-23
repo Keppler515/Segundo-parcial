@@ -638,6 +638,7 @@ int arcade_imprimirJuegos(char* path , LinkedList* this)
 	Arcade* aAux;
 	Arcade* aAux2;
 	FILE* pArch = fopen(path,"r");
+	int flagPrimero = 0;
 
 	if(path!=NULL && pArch!=NULL && this!=NULL)
 	{
@@ -647,13 +648,24 @@ int arcade_imprimirJuegos(char* path , LinkedList* this)
 
 		printf("\nLISTA DE JUEGOS\n");
 
+		if(flagPrimero==0)
+		{
+			for(i=0;i<1;i++)
+			{
+				aAux = ll_get(this, i);
+				arcade_getNombreJuego(aAux, nombreAux);
+				printf("%s\n",nombreAux);
+				flagPrimero = 1;
+			}
+		}
+
 		for(i=0;i<ll_len(this)-1;i++)
 		{
 			aAux = ll_get(this, i);
 			aAux2 = ll_get(this, i+1);
 			if(strcmp(aAux->nombreJuego,aAux2->nombreJuego)!=0)
 			{
-				arcade_getNombreJuego(aAux, nombreAux);
+				arcade_getNombreJuego(aAux2, nombreAux);
 				printf("%s\n",nombreAux);
 			}
 		}
